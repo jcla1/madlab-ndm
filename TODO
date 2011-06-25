@@ -1,0 +1,21 @@
+Step by step:
+
+	- Put QR-code on book
+	- Scan QR-code for the 1st time
+	- Fill in information
+		Thing:
+		- Title
+		- Author
+		- (ISBN)
+
+		Annotation:
+		- Comment
+		- (Picture)
+
+		Other:
+		- Automatic: date & time, (location)
+
+TODOs:
+	
+	- Design UI
+	- Logic
