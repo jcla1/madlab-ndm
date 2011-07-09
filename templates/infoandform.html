@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <title>Info on Thing</title>
+</head>
+<body>
+  {% if info %}
+    <p>Title: {{ info[0] }}</p>
+  {% else %}
+    <form method="post" accept-charset="utf-8">
+      <p>Title: <input type="text" name="title"></p>
+
+      <p><input type="submit" value="Continue &rarr;"></p>
+    </form>
+  {% endif %}
+
+</body></html>
