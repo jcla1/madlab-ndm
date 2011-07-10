@@ -15,13 +15,18 @@ THING_URL_BASE = "http://localhost:8080/"
 class GenerateThingHandler(webapp.RequestHandler):
     def get(self):
         thingquery = getString(20)
-	if thingquery[0].count() == 1:
-          self.response.out.write('<img src="http://chart.apis.google.com/chart?cht=qr&chs=250x250&chld=M&chl='+ THING_URL_BASE + thingquery[0][0].thingid + '" />')
+        query = Thing.gql('WHERE thingid = :1 LIMIT 1', thingquery)
+	if query.count() == 1:
+          self.response.out.write('<img src="http://chart.apis.google.com/chart?cht=qr&chs=250x250&chld=M&chl='+ THING_URL_BASE + 'thing/' + thingquery + '" />')
+          self.response.out.write(thingquery)
         else:
           thing = Thing()
-          thing.thingid = thingquery[1]
+          thing.thingid = thingquery
           thing.put()
-          self.response.out.write('<img src="http://chart.apis.google.com/chart?cht=qr&chs=250x250&chld=M&chl='+ THING_URL_BASE + thingquery[0][0].thingid + '" />')
+          self.response.out.write('<img src="http://chart.apis.google.com/chart?cht=qr&chs=250x250&chld=M&chl='+ THING_URL_BASE + 'thing/' + thingquery + '" />')
+          self.response.out.write("<br /><a href='%sthing/%s'>%s</a>" % (THING_URL_BASE, thingquery, thingquery))
+
+
 
 class ThingHandler(webapp.RequestHandler):
     def get(self, passedid):
@@ -30,9 +35,9 @@ class ThingHandler(webapp.RequestHandler):
       if (query.count() == 0):
         self.response.out.write("The id you passed does not exist.")
       else:
-        query = Thing.gql('WHERE thingid = :1 AND title = :2 LIMIT 1', passedid, None)
+        query = Thing.gql('WHERE thingid = :1 LIMIT 1', passedid)
         
-        if (query.count() == 0):
+        if (query.fetch(1)[0].title == None):
           # Now display a form for adding info.
           self.response.out.write(
               template.render(tpl('infoandform.html'), {
@@ -41,15 +46,26 @@ class ThingHandler(webapp.RequestHandler):
   	               })
   	          )
         else:
+          query = Thing.gql('WHERE thingid = :1 LIMIT 1', passedid)
+          result = query.fetch(1)
           # Just display the info to the user.
           self.response.out.write(
               template.render(tpl('infoandform.html'), {
-                  'info': {title:q}
+                  'info': {'title': result[0].title, 'author': result[0].author},
   		            'loginurl':	users.create_login_url('/'),
   		            'logouturl': users.create_logout_url('/')
   	               })
   	          )
-      
+
+    def post(self, passedid):
+      title = self.request.get('title')
+      author = self.request.get('author')
+
+      newthing = Thing().all().filter("thingid =", passedid).fetch(1)
+      newthing[0].title = title
+      newthing[0].author = author
+      newthing[0].put()
+
 
 def main():
     application = webapp.WSGIApplication([
