@@ -8,6 +8,15 @@
   {% if info %}
     <p>Title: {{ info.title }}</p>
     <p>Author: {{ info.author }}</p>
+    
+    <form method="post" action="/annotation/new" accept-charset="utf-8">
+      <input type="hidden" name="thingid" value="{{ info.thingid }}" id="thingid">
+      <p>Comment: <input type="text" name="comment" id="comment"></p>      
+      <p><input type="submit" value="Continue &rarr;"></p>
+      {% for a in info.annotations %}
+        <p>{{ a.comment }}</p>
+      {% endfor %}
+    </form>
   {% else %}
     <form method="post" accept-charset="utf-8">
       <p>Title: <input type="text" name="title"></p>

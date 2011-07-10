@@ -7,9 +7,11 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
 
+import logging
+
 from func import *
 
-THING_URL_BASE = "http://localhost:8080/"
+THING_URL_BASE = "http://192.168.0.90:8080/"
 
 
 class GenerateThingHandler(webapp.RequestHandler):
@@ -35,7 +37,6 @@ class ThingHandler(webapp.RequestHandler):
       if (query.count() == 0):
         self.response.out.write("The id you passed does not exist.")
       else:
-        query = Thing.gql('WHERE thingid = :1 LIMIT 1', passedid)
         
         if (query.fetch(1)[0].title == None):
           # Now display a form for adding info.
@@ -46,12 +47,14 @@ class ThingHandler(webapp.RequestHandler):
   	               })
   	          )
         else:
-          query = Thing.gql('WHERE thingid = :1 LIMIT 1', passedid)
           result = query.fetch(1)
+          annotations = Annotation().all().filter('thing =', result[0]).order("-created").fetch(999)
+          logging.info("thing: %s" % result[0])
+          logging.info("annotations: %s" % annotations)
           # Just display the info to the user.
           self.response.out.write(
               template.render(tpl('infoandform.html'), {
-                  'info': {'title': result[0].title, 'author': result[0].author},
+                  'info': {'annotations': annotations,'title': result[0].title, 'author': result[0].author, 'thingid': passedid},
   		            'loginurl':	users.create_login_url('/'),
   		            'logouturl': users.create_logout_url('/')
   	               })

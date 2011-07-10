@@ -18,7 +18,3 @@ class Annotation(db.Model):
 	created = db.DateTimeProperty(auto_now_add=True)
 	creator = db.UserProperty()	
 
-class User(db.Model):
-	name = db.StringProperty()
-	email = db.EmailProperty()
-	nickname = db.StringProperty()

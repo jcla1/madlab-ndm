@@ -6,6 +6,14 @@ api_version: 1
 handlers:
 - url: /thing/.*
   script: thing.py
+  login: required
+  
+- url: /annotation/.*
+  script: annotation.py
+  login: required
 
 - url: .*
   script: main.py
+
+builtins:
+  - remote_api: on

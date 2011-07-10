@@ -8,7 +8,7 @@ from google.appengine.ext.webapp import util
 
 from func import *
 
-THING_URL_BASE = "http://localhost:8080/"
+THING_URL_BASE = "http://192.168.0.90:8080/"
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
