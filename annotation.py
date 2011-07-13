@@ -10,8 +10,6 @@ from google.appengine.ext.webapp import template
 from models import *
 from func import *
 
-THING_URL_BASE = "http://192.168.0.90:8080/"
-
 class NewAnnotationHandler(webapp.RequestHandler):
     def post(self):
       thingid = self.request.get("thingid")

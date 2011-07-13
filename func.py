@@ -9,6 +9,7 @@ from models import *
 import random, string, os
 
 TEMPLATE_DIR = "templates"
+THING_URL_BASE = "http://localhost:8080/"
 
 def tpl(name):
   return os.path.join(

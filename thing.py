@@ -11,8 +11,6 @@ import logging
 
 from func import *
 
-THING_URL_BASE = "http://192.168.0.90:8080/"
-
 
 class GenerateThingHandler(webapp.RequestHandler):
     def get(self):
@@ -68,6 +66,8 @@ class ThingHandler(webapp.RequestHandler):
       newthing[0].title = title
       newthing[0].author = author
       newthing[0].put()
+      
+      self.redirect("%sthing/%s" %(THING_URL_BASE,passedid))
 
 
 def main():
