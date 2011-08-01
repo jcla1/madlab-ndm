@@ -12,6 +12,13 @@ handlers:
   script: annotation.py
   login: required
 
+- url: /generate
+  script: generate.py
+  login: required
+
+- url: /css
+  static_dir: css
+
 - url: .*
   script: main.py
 

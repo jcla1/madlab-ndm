@@ -11,23 +11,6 @@ import logging
 
 from func import *
 
-
-class GenerateThingHandler(webapp.RequestHandler):
-    def get(self):
-        thingquery = getString(20)
-        query = Thing.gql('WHERE thingid = :1 LIMIT 1', thingquery)
-	if query.count() == 1:
-          self.response.out.write('<img src="http://chart.apis.google.com/chart?cht=qr&chs=250x250&chld=M&chl='+ THING_URL_BASE + 'thing/' + thingquery + '" />')
-          self.response.out.write(thingquery)
-        else:
-          thing = Thing()
-          thing.thingid = thingquery
-          thing.put()
-          self.response.out.write('<img src="http://chart.apis.google.com/chart?cht=qr&chs=250x250&chld=M&chl='+ THING_URL_BASE + 'thing/' + thingquery + '" />')
-          self.response.out.write("<br /><a href='%sthing/%s'>%s</a>" % (THING_URL_BASE, thingquery, thingquery))
-
-
-
 class ThingHandler(webapp.RequestHandler):
     def get(self, passedid):
       query = Thing.gql('WHERE thingid = :1 LIMIT 1', passedid)
@@ -61,18 +44,20 @@ class ThingHandler(webapp.RequestHandler):
     def post(self, passedid):
       title = self.request.get('title')
       author = self.request.get('author')
-
-      newthing = Thing().all().filter("thingid =", passedid).fetch(1)
-      newthing[0].title = title
-      newthing[0].author = author
-      newthing[0].put()
+      if ( title and author ):
+        newthing = Thing().all().filter("thingid =", passedid).fetch(1)
+        newthing[0].title = title
+        newthing[0].author = author
+        newthing[0].put()
+        self.redirect("%sthing/%s" %(THING_URL_BASE,passedid))
+      else:
+        self.response.out.write("ERROR")
       
-      self.redirect("%sthing/%s" %(THING_URL_BASE,passedid))
+
 
 
 def main():
     application = webapp.WSGIApplication([
-      ('/thing/generate', GenerateThingHandler),
       ('/thing/(.*)', ThingHandler)
       ],
                                          debug=True)
