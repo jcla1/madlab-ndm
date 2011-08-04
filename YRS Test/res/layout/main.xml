@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <Button android:id="@+id/barscan" android:text="Scan a Barcode for ISBN" android:layout_width="match_parent" android:layout_height="100px"></Button>
+    <Button android:layout_width="match_parent" android:text="Scan a QR code to fill data" android:id="@+id/qrscan" android:layout_height="100px"></Button>
+    <Button android:text="Send the Data to the cloud" android:id="@+id/sendData" android:layout_height="100px" android:layout_width="match_parent"></Button>
+    <Button android:layout_height="100px" android:layout_width="match_parent" android:text="Reset the data for next entry" android:id="@+id/reset"></Button>
+    <TextView android:textSize="40px" android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    <TextView android:textSize="30px" android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/ISBNLabel" android:text="ISBN Goes here"></TextView>
+    <TextView android:textSize="30px" android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/ThingIDLabel" android:text="ThingID Goes here"></TextView>
+</LinearLayout>
