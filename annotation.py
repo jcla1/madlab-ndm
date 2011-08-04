@@ -6,6 +6,7 @@
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
+from google.appengine.api import users
 
 from models import *
 from func import *
@@ -15,6 +16,8 @@ class NewAnnotationHandler(webapp.RequestHandler):
       thingid = self.request.get("thingid")
       comment = self.request.get("comment")
       
+      user = users.get_current_user()
+      
       query = Thing().all().filter("thingid =", thingid)
       result = query.get()
       
@@ -22,9 +25,10 @@ class NewAnnotationHandler(webapp.RequestHandler):
       a = Annotation()
       a.thing = result
       a.comment = comment
+      a.creator = user
       a.put()
       
-      self.response.out.write("Your annotation was added")
+      self.redirect(THING_URL_BASE + "thing/" + thingid)
           
 
 def main():

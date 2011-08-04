@@ -16,6 +16,17 @@ handlers:
   script: generate.py
   login: required
 
+- url: /search.*
+  script: search.py
+  login: required
+  
+- url: /listofbooks
+  script: listings.py
+  login: admin
+  
+- url: /isbn.*
+  script: isbn.py
+
 - url: /css
   static_dir: css
 

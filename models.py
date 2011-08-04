@@ -8,7 +8,7 @@ class Thing(db.Model):
 	title = db.StringProperty()
 	author = db.StringProperty()
 	thingid = db.StringProperty()
-#	isbn
+	isbn = db.StringProperty()
 
 class Annotation(db.Model):
 	thing = db.ReferenceProperty(Thing)

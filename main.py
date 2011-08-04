@@ -11,12 +11,25 @@ from func import *
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
-	    self.response.out.write(
-          template.render(tpl('testpage.html'), {
-	            'loginurl':	users.create_login_url('/'),
-	            'logouturl': users.create_logout_url('/')
-               })
-      )
+        
+        user = users.get_current_user()
+        
+        if user:
+	        self.response.out.write(
+            template.render(tpl('testpage.html'), {
+                    'user': True,
+	                'loginurl':	users.create_login_url('/'),
+	                'logouturl': users.create_logout_url('/')
+                    })
+            )
+        else:
+            self.response.out.write(
+            template.render(tpl('testpage.html'), {
+                    'user': False,
+	                'loginurl':	users.create_login_url('/'),
+	                'logouturl': users.create_logout_url('/')
+                    })
+            )
       
 
 def main():

@@ -17,9 +17,14 @@
         <nav>
         <h1><a href="/">Madlab NDM</a></h1>
           <ul id="head_links">
+              {% if user %}
+                <li><a href="{{ logouturl }}">Logout</a></li>
+              {% else %}
+                <li><a href="{{ loginurl }}">Login</a></li>              
+              {% endif %}
               <li><a href="/generate">Generate</a></li>
               <!--li><a href="#">Add Annotation</a></li-->
-              <li><a href="#">Search Annotations</a></li>
+              <li><a href="/search">Search Annotations</a></li>
           </ul>
         </nav>
     </header>
