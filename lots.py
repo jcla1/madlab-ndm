@@ -10,6 +10,7 @@ from google.appengine.ext.webapp import template
 import logging
 
 from func import *
+from models import *
 
 
 class GenerateThingHandler(webapp.RequestHandler):
@@ -20,14 +21,7 @@ class GenerateThingHandler(webapp.RequestHandler):
             qrcode_link = '<img src="http://chart.apis.google.com/chart?cht=qr&chs=150x150&chld=M&chl='+ THING_URL_BASE + 'thing/' + thingquery + '" />'
             thing_link = THING_URL_BASE + 'thing/' + thingquery
           
-            self.response.out.write(
-                template.render(tpl('generate.html'), {
-                    'qrimg': qrcode_link,
-                    'thing_link': thing_link,
-    	            'loginurl':	users.create_login_url('/'),
-    	            'logouturl': users.create_logout_url('/')
-                     })
-            )
+            self.response.out.write(qrcode_link)
           
         else:
           thing = Thing()
@@ -38,18 +32,17 @@ class GenerateThingHandler(webapp.RequestHandler):
           thing_link = THING_URL_BASE + 'thing/' + thingquery
 
           
-          self.response.out.write(
-              template.render(tpl('generate.html'), {
-                  'qrimg': qrcode_link,
-                  'thing_link': thing_link,
-    	            'loginurl':	users.create_login_url('/'),
-    	            'logouturl': users.create_logout_url('/')
-                   })
-          )
+          self.response.out.write(qrcode_link)
+          
+    def post(self):
+        q = Thing.all().fetch(9999)
+        for i in q:
+            i.delete()
+        self.response.out.write("ok")
 
 def main():
     application = webapp.WSGIApplication([
-      ('/generate', GenerateThingHandler)
+      ('/lots', GenerateThingHandler)
       ],
                                          debug=True)
     util.run_wsgi_app(application)

@@ -26,6 +26,12 @@ handlers:
   
 - url: /isbn.*
   script: isbn.py
+  
+- url: /lots
+  script: lots.py
+  
+- url: /datadumper
+  script: datadumper.py
 
 - url: /css
   static_dir: css
