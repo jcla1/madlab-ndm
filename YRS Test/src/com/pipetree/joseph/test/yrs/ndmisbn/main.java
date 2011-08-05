@@ -33,6 +33,7 @@ public class main extends Activity {
         sendbutton.setOnClickListener(sendData);
         
         Button resetbutton = (Button)findViewById(R.id.reset);
+        resetbutton.setEnabled(false);
         resetbutton.setOnClickListener(reset);
         
         Global.isbnTextView = (TextView)findViewById(R.id.ISBNLabel);
@@ -162,7 +163,19 @@ public class main extends Activity {
     public Button.OnClickListener sendData = new Button.OnClickListener() {
         public void onClick(View v) {
          
+        	if(Global.thingid != ""){
 				doRequest();
+				Global.isbn = "";
+				Global.thingid = "";
+				Global.update();
+        	} else {
+        		Context context = getApplicationContext();
+        		CharSequence text = "You need to scan more Data first!";
+        		int duration = Toast.LENGTH_LONG;
+
+        		Toast toast = Toast.makeText(context, text, duration);
+        		toast.show();
+        	}
         }
     };
     
